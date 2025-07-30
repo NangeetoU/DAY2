@@ -60,10 +60,14 @@ app.put('/products/:id', async (req, res) => {
       'UPDATE products SET name = ?, price = ?, discount = ?, review_count = ?, image_url = ? WHERE id = ? AND deleted = 0',
       [name, price, discount, review_count, image_url, req.params.id]
     );
-    if (result.affectedRows > 0) res.json({ message: 'Product updated' });
-    else res.status(404).json({ message: 'Product not found or deleted' });
+    if (result.affectedRows > 0) {
+      res.json({ message: 'Product updated' });
+    } else {
+      res.status(404).json({ message: 'Product not found or deleted' });
+    }
   } catch (err) {
-    res.status(500).json({ message: 'Update failed', error: err });
+    console.error('Update failed:', err);
+    res.status(500).json({ message: 'Update failed', error: err.message });
   }
 });
 
